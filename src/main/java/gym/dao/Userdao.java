@@ -15,6 +15,7 @@ import gym.model.User;
 
 public class Userdao {
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public boolean registerUser(String username, String rawPassword, String email, String phone, String address, String role) {
         String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
         String sql = "INSERT INTO users (username, password_hash, email, phone, address, role) VALUES (?, ?, ?, ?, ?, ?::user_role)";
@@ -30,9 +31,10 @@ public class Userdao {
             stmt.setString(6, role);
             
             return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            return false;
-        }
+                } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+                }      
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
@@ -95,8 +97,9 @@ public class Userdao {
             stmt.setInt(1, userId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
-        }
+            }
     }
 }
 
